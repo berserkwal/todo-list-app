@@ -9,6 +9,7 @@
 	--color-white: #fff;
 	--color-text: #202020;
 	--color-dark: #202020;
+	--color-overlay: #20202069;
 	--color-text-light: #444444b0;
 	--color-background: #fff;
 	--color-grey: #d3d3d3;
@@ -25,6 +26,7 @@
 	--color-aside: #2b2b2b;
 	--color-white: #fff;
 	--color-text: #e9e9e9;
+	--color-overlay: #cccccc69;
 	--color-dark: #202020;
 	--color-text-light: #cacacac2;
 	--color-background: #1f1f1f;
@@ -420,9 +422,6 @@ main h2 {
 }
 
 .list-container li h3 {
-	/* word-wrap: normal; */
-	/* word-break: ellipsis; */
-	/* max-width: 300px; */
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
@@ -452,6 +451,7 @@ main h2 {
 
 .list-container li.expanded {
 	transition: all 0s ease;
+	background-color: var(--color-super-transparent);
 
 	gap: 1rem;
 }
@@ -510,8 +510,8 @@ main h2 {
 }
 
 .modal-overlay {
-	background-color: var(--color-dark);
-	opacity: 0.6;
+	background-color: var(--color-overlay);
+	/* opacity: 0.6; */
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -520,12 +520,14 @@ main h2 {
 
 .modal form {
 	background-color: var(--color-background);
+	border: 1px solid var(--color-super-transparent);
 	z-index: 100;
 	display: grid;
 	padding: 2rem;
 	gap: 1rem;
 	grid-template: repeat(6, auto) / repeat(2, 1fr);
 	width: 300px;
+	color: var(--color-text);
 }
 .add-project-modal form {
 	background-color: var(--color-background);
@@ -547,6 +549,7 @@ main h2 {
 
 .modal form *:not(label, button):focus {
 	border-bottom: 1px solid var(--color-accent);
+	color: var(--color-text);
 }
 
 .modal form > *:not(.button) {
@@ -554,10 +557,10 @@ main h2 {
 	font-size: 0.8rem;
 	outline: none;
 	font-family: var(--ff);
-	color: var(--color-dark);
 }
 
-.modal form label {
+.modal form > label {
+	color: var(--color-text);
 	display: flex;
 	gap: 0.5rem;
 }
@@ -600,4 +603,65 @@ main h2 {
 .modal form .save-button:hover {
 	background-color: var(--color-accent-highlight);
 	text-decoration: underline;
+}
+
+@media screen and (max-width: 880px) {
+	header {
+		display: grid;
+		align-items: center;
+		grid-template-columns: auto 1fr;
+		gap: 2rem;
+	}
+	.ham {
+		padding: 0.2rem;
+		margin-left: -1rem;
+		display: grid;
+		gap: 0.4rem;
+		align-items: center;
+		height: max-content;
+		width: max-content;
+		cursor: pointer;
+	}
+	.ham > * {
+		height: 2px;
+		width: 1.5rem;
+		background-color: var(--color-white);
+		pointer-events: none;
+		transform-origin: left;
+		transition: transform 0.25s ease;
+	}
+
+	.ham.click > div:nth-of-type(2) {
+		opacity: 0;
+	}
+	.ham.click > div:nth-of-type(1) {
+		transform: rotate(45deg);
+	}
+	.ham.click > div:nth-of-type(3) {
+		transform: rotate(-45deg);
+	}
+
+	.add-button {
+		right: 0.5rem;
+		bottom: 0.5rem;
+		height: 3rem;
+		width: 3rem;
+		font-size: 3rem;
+	}
+	section {
+		grid-template: 1fr / 1fr;
+	}
+	section aside {
+		position: absolute;
+	}
+	main {
+		padding: 1rem 1rem;
+	}
+
+	main li section.reveal {
+		grid-template: 1fr / 1fr;
+	}
+	.list-container li .icon:not(.flag-icon) {
+		visibility: visible;
+	}
 }

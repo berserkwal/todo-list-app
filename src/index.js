@@ -27,12 +27,19 @@ import parseISO from "date-fns/parseISO";
 
 	function generateHeader() {
 		const headerContainer = document.createElement("header");
+		const headerHam = document.createElement("div");
 		const headerLogoText = document.createElement("div");
 		const headerLogo = document.createElement("div");
 		const headerLogoImage = document.createElement("div");
 		const bigHText = document.createElement("h2");
 		const smallHText = document.createElement("p");
 		const logo = new Image();
+
+		headerHam.classList.add("ham");
+		for (let i = 0; i < 3; i++) {
+			const div = document.createElement("div");
+			headerHam.append(div);
+		}
 
 		bigHText.classList.add("big-h-text");
 		smallHText.classList.add("small-h-text");
@@ -45,11 +52,23 @@ import parseISO from "date-fns/parseISO";
 		bigHText.textContent = "To-do";
 		smallHText.textContent = "or not to do...";
 
+		headerHam.addEventListener("click", hamEvent);
+
 		headerLogoImage.append(logo);
 		headerLogoText.append(bigHText, smallHText);
 		headerLogo.append(headerLogoImage, headerLogoText);
-		headerContainer.append(headerLogo);
+		headerContainer.append(headerHam, headerLogo);
 		return headerContainer;
+	}
+
+	function hamEvent(event) {
+		if (event.target.classList.contains("click")) {
+			event.target.classList.remove("click");
+			document.querySelector("section").classList.remove("reveal");
+		} else {
+			event.target.classList.add("click");
+			document.querySelector("section").classList.add("reveal");
+		}
 	}
 
 	function generateContent() {
@@ -697,6 +716,8 @@ import parseISO from "date-fns/parseISO";
 				document.documentElement.classList.add("darkmode");
 			}
 		} else localStorage.setItem("theme", "light");
+
+		let vw = window.innerWidth;
 
 		let unitHeight = window.innerHeight / 100;
 		document.documentElement.style.setProperty("--vh", unitHeight);
