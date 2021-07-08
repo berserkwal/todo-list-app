@@ -327,6 +327,7 @@ import parseISO from "date-fns/parseISO";
 		const prioritySelectLabel = document.createElement("label");
 		const prioritySelect = document.createElement("select");
 		const categorySelectLabel = document.createElement("label");
+		const dateLabel = document.createElement("label");
 		const categorySelect = document.createElement("select");
 		const datePicker = document.createElement("input");
 		const saveButton = document.createElement("button");
@@ -406,10 +407,12 @@ import parseISO from "date-fns/parseISO";
 			event.preventDefault();
 		});
 
+		dateLabel.append("Due Date:", datePicker);
+
 		modalBody.append(
 			titleInput,
 			descriptionInput,
-			datePicker,
+			dateLabel,
 			prioritySelectLabel,
 			categorySelectLabel,
 			cancelButton,
@@ -433,6 +436,7 @@ import parseISO from "date-fns/parseISO";
 		const datePicker = document.createElement("input");
 		const saveButton = document.createElement("button");
 		const cancelButton = document.createElement("div");
+		const dateLabel = document.createElement("label");
 
 		const pageHead = document.querySelector(".page-head").textContent;
 
@@ -520,11 +524,12 @@ import parseISO from "date-fns/parseISO";
 			modal.remove();
 			event.preventDefault();
 		});
+		dateLabel.append("Due Date:", datePicker);
 
 		modalBody.append(
 			titleInput,
 			descriptionInput,
-			datePicker,
+			dateLabel,
 			prioritySelectLabel,
 			categorySelectLabel,
 			cancelButton,

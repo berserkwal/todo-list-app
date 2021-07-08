@@ -583,6 +583,7 @@ main h2 {
 	color: var(--color-text);
 	display: flex;
 	gap: 0.5rem;
+	align-items: center;
 }
 
 .modal form input,
