@@ -204,11 +204,11 @@ section.reveal aside {
 	fill: var(--color-text);
 }
 .sidebar-li-container > li:last-of-type ul li:hover > svg path {
-	fill: var(--color-accent);
+	fill: hsl(219, 100%, 74%);
 }
 
 .sidebar-li-container > li:last-of-type ul li div:hover path {
-	fill: red;
+	fill: rgb(231, 113, 113);
 }
 .sidebar-li-container > li:last-of-type > ul li svg {
 	height: 13px;
@@ -510,13 +510,13 @@ main h2 {
 }
 
 .list-container li.high .flag-icon path {
-	fill: red;
+	fill: rgb(231, 113, 113);
 }
 .list-container li.normal .flag-icon path {
-	fill: orange;
+	fill: rgb(255, 208, 121);
 }
 .list-container li.low .flag-icon path {
-	fill: green;
+	fill: rgb(127, 255, 127);
 }
 
 .modal {
