@@ -331,6 +331,7 @@ main {
 main h2 {
 	font-weight: 400;
 	font-size: 2rem;
+	box-shadow: 0px 2px 0 0px var(--color-super-transparent);
 }
 
 .list-container {
