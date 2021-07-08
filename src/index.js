@@ -123,12 +123,14 @@ import parseISO from "date-fns/parseISO";
 
 		saveButton.addEventListener("click", (event) => {
 			if (nameInput.value) {
-				notesModule.setProject(nameInput.value);
-				modal.remove();
-				clearProjectList();
-				generateProjectList(document.querySelector(".project-list"));
-				injectSVG();
-				event.preventDefault();
+				if (!notesModule.getProjectList().includes(nameInput.value)) {
+					notesModule.setProject(nameInput.value);
+					modal.remove();
+					clearProjectList();
+					generateProjectList(document.querySelector(".project-list"));
+					injectSVG();
+					event.preventDefault();
+				}
 			}
 		});
 		cancelButton.addEventListener("click", (event) => {
@@ -475,7 +477,10 @@ import parseISO from "date-fns/parseISO";
 					? "Default"
 					: notesModule.getProjectList()[i];
 			if (notesModule.getNotesList()[index].category) {
-				if (notesModule.getNotesList()[index].category === node.value) {
+				if (
+					notesModule.getNotesList()[index].category ===
+					notesModule.getProjectList()[i]
+				) {
 					node.setAttribute("selected", "selected");
 				}
 			} else if (node.value === "null") {
@@ -543,6 +548,7 @@ import parseISO from "date-fns/parseISO";
 	function listEvent(event) {
 		const listTarget = event.target;
 		const listIndex = listTarget.parentElement.dataset.index;
+		console.log(listIndex);
 		switch (listTarget.classList[0]) {
 			case "flag-icon":
 				event.stopPropagation();
@@ -653,7 +659,7 @@ import parseISO from "date-fns/parseISO";
 
 				listCheck.setAttribute("type", "checkbox");
 
-				list.dataset.index = i;
+				list.dataset.index = currentList[i]["index"];
 
 				listTitle.textContent = currentList[i].title;
 				listCheck.checked = currentList[i].isDone;
@@ -704,6 +710,7 @@ import parseISO from "date-fns/parseISO";
 					listDeleteContainer,
 					listDescription
 				);
+				console.log(list);
 				listContainer.append(list);
 				injectSVG();
 			}

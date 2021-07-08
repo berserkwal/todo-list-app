@@ -10,7 +10,7 @@ const notesModule = (function () {
 		notesList = JSON.parse(localStorage.getItem("notesList"));
 	}
 
-	const createNotes = function (
+	function createNotes(
 		title,
 		description,
 		dueDate,
@@ -18,6 +18,7 @@ const notesModule = (function () {
 		isDone,
 		category
 	) {
+		console.log(notesList.length);
 		const noteObj = {
 			title,
 			description,
@@ -25,9 +26,10 @@ const notesModule = (function () {
 			priority,
 			isDone,
 			category,
+			index: notesList.length,
 		};
 		return noteObj;
-	};
+	}
 
 	function getNotesList() {
 		return [...notesList];
@@ -35,11 +37,19 @@ const notesModule = (function () {
 
 	function setNotes(...args) {
 		const note = createNotes(...args);
-		notesList.unshift(note);
+		notesList.push(note);
 		localStorage.setItem("notesList", JSON.stringify(notesList));
 	}
 
 	function removeNote(index) {
+		console.log(index);
+		console.log(notesList.length);
+		if (index < notesList.length - 1) {
+			for (let i = index - 1; i >= 0; i--) {
+				console.log("in here", i);
+				notesList[i]["index"] = notesList[i]["index"] - 1;
+			}
+		}
 		notesList.splice(index, 1);
 		localStorage.setItem("notesList", JSON.stringify(notesList));
 	}
