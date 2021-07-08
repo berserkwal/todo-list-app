@@ -121,13 +121,9 @@ import parseISO from "date-fns/parseISO";
 		saveButton.classList.add("save-button");
 		cancelButton.classList.add("cancel-button");
 
-		console.log(notesModule.getProjectList());
-
 		saveButton.addEventListener("click", (event) => {
 			if (nameInput.value) {
-				console.log(nameInput.value);
 				notesModule.setProject(nameInput.value);
-				console.log(notesModule.getProjectList());
 				modal.remove();
 				clearProjectList();
 				generateProjectList(document.querySelector(".project-list"));
@@ -181,7 +177,6 @@ import parseISO from "date-fns/parseISO";
 
 	function clearProjectLi(event) {
 		const pageHead = document.querySelector(".page-head");
-		console.log(event.target.parentElement.dataset.index);
 		const indices = [];
 		for (let i = 0; i < notesModule.getNotesList().length; i++) {
 			if (
@@ -365,13 +360,11 @@ import parseISO from "date-fns/parseISO";
 		for (let i = 0; i < notesModule.getProjectList().length; i++) {
 			const node = document.createElement("option");
 			node.value = notesModule.getProjectList()[i];
-			console.log(notesModule.getProjectList()[i]);
 			node.textContent =
 				notesModule.getProjectList()[i] === "Home"
 					? "Default"
 					: notesModule.getProjectList()[i];
 			const pageHead = document.querySelector(".page-head").textContent;
-			console.log(pageHead);
 			if (!(pageHead === "Home" && pageHead === "Today")) {
 				if (notesModule.getProjectList()[i] === pageHead) {
 					node.setAttribute("selected", "selected");
@@ -624,80 +617,91 @@ import parseISO from "date-fns/parseISO";
 				return item.category === page;
 			});
 		}
+		if (!currentList.length) {
+			console.log("empty");
+			const li = document.createElement("li");
+			const p = document.createElement("p");
+			li.innerText = "Nothing to see here, yet.";
+			p.innerText =
+				"Press the button on the bottom-right corner to add a task.";
+			li.append(p);
+			li.classList.add("message-li");
+			listContainer.append(li);
+		} else {
+			for (let i = 0; i < currentList.length; i++) {
+				const list = document.createElement("li");
+				const listCheck = document.createElement("input");
+				const listCheckLabel = document.createElement("label");
+				const listTitle = document.createElement("h3");
+				const listDescription = document.createElement("p");
+				const listDate = document.createElement("h5");
+				const listFlagContainer = document.createElement("div");
+				const listEditContainer = document.createElement("div");
+				const listDeleteContainer = document.createElement("div");
+				const listFlag = new Image();
+				const listEdit = new Image();
+				const listDelete = new Image();
 
-		for (let i = 0; i < currentList.length; i++) {
-			const list = document.createElement("li");
-			const listCheck = document.createElement("input");
-			const listCheckLabel = document.createElement("label");
-			const listTitle = document.createElement("h3");
-			const listDescription = document.createElement("p");
-			const listDate = document.createElement("h5");
-			const listFlagContainer = document.createElement("div");
-			const listEditContainer = document.createElement("div");
-			const listDeleteContainer = document.createElement("div");
-			const listFlag = new Image();
-			const listEdit = new Image();
-			const listDelete = new Image();
+				listFlag.src = flagSrc;
+				listEdit.src = editSrc;
+				listDelete.src = deleteSrc;
 
-			listFlag.src = flagSrc;
-			listEdit.src = editSrc;
-			listDelete.src = deleteSrc;
+				listCheck.setAttribute("type", "checkbox");
 
-			listCheck.setAttribute("type", "checkbox");
+				list.dataset.index = i;
 
-			list.dataset.index = i;
+				listTitle.textContent = currentList[i].title;
+				listCheck.checked = currentList[i].isDone;
+				listDescription.textContent = currentList[i].description;
+				listDate.textContent = format(
+					parseISO(currentList[i].dueDate),
+					"dd/MM/yyyy"
+				);
 
-			listTitle.textContent = currentList[i].title;
-			listCheck.checked = currentList[i].isDone;
-			listDescription.textContent = currentList[i].description;
-			listDate.textContent = format(
-				parseISO(currentList[i].dueDate),
-				"dd/MM/yyyy"
-			);
+				listFlagContainer.classList.add("flag-icon", "icon");
+				listEditContainer.classList.add("edit-icon", "icon");
+				listDeleteContainer.classList.add("delete-icon", "icon");
+				listFlag.classList.add("svg-icon");
+				listEdit.classList.add("svg-icon");
+				listDelete.classList.add("svg-icon");
+				list.classList.add("note-li");
+				listCheck.classList.add("check-icon");
+				listCheckLabel.classList.add("checkbox-container");
+				if (currentList[i].isDone) {
+					list.classList.add("checked-li");
+				}
+				switch (currentList[i].priority) {
+					case 1:
+						list.classList.add("low");
+						break;
+					case 2:
+						list.classList.add("normal");
+						break;
+					case 3:
+						list.classList.add("high");
+						break;
+				}
 
-			listFlagContainer.classList.add("flag-icon", "icon");
-			listEditContainer.classList.add("edit-icon", "icon");
-			listDeleteContainer.classList.add("delete-icon", "icon");
-			listFlag.classList.add("svg-icon");
-			listEdit.classList.add("svg-icon");
-			listDelete.classList.add("svg-icon");
-			list.classList.add("note-li");
-			listCheck.classList.add("check-icon");
-			listCheckLabel.classList.add("checkbox-container");
-			if (currentList[i].isDone) {
-				list.classList.add("checked-li");
+				listFlagContainer.append(listFlag);
+				listEditContainer.append(listEdit);
+				listDeleteContainer.append(listDelete);
+
+				list.addEventListener("click", listEvent);
+
+				listCheckLabel.append(listCheck);
+
+				list.append(
+					listCheckLabel,
+					listTitle,
+					listDate,
+					listFlagContainer,
+					listEditContainer,
+					listDeleteContainer,
+					listDescription
+				);
+				listContainer.append(list);
+				injectSVG();
 			}
-			switch (currentList[i].priority) {
-				case 1:
-					list.classList.add("low");
-					break;
-				case 2:
-					list.classList.add("normal");
-					break;
-				case 3:
-					list.classList.add("high");
-					break;
-			}
-
-			listFlagContainer.append(listFlag);
-			listEditContainer.append(listEdit);
-			listDeleteContainer.append(listDelete);
-
-			list.addEventListener("click", listEvent);
-
-			listCheckLabel.append(listCheck);
-
-			list.append(
-				listCheckLabel,
-				listTitle,
-				listDate,
-				listFlagContainer,
-				listEditContainer,
-				listDeleteContainer,
-				listDescription
-			);
-			listContainer.append(list);
-			injectSVG();
 		}
 	}
 

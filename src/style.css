@@ -333,6 +333,7 @@ main h2 {
 }
 
 .list-container {
+	display: grid;
 	list-style: none;
 	overflow-y: auto;
 	/* background-color: var(--color-grey); */
@@ -372,7 +373,7 @@ main h2 {
 	background-color: var(--color-accent-highlight);
 }
 
-.list-container li {
+.list-container .note-li {
 	display: grid;
 	grid-template-columns: auto 1fr repeat(4, auto);
 	align-items: baseline;
@@ -438,7 +439,7 @@ main h2 {
 	font-weight: 300;
 }
 
-.list-container p {
+.list-container .note-li p {
 	/* max-width: 300px; */
 	transition: transform 0.25s ease, height 0s 0.25s;
 	transform-origin: top;
@@ -447,6 +448,25 @@ main h2 {
 	word-wrap: break-word;
 	grid-column: 2 / 5;
 	transform: scaleY(0);
+}
+
+.message-li {
+	font-size: 1.3rem;
+	font-weight: 600;
+	display: grid;
+	text-align: center;
+	align-self: center;
+	justify-self: center;
+	color: var(--color-text);
+	opacity: 0.4;
+	user-select: none;
+}
+.list-container .message-li:hover {
+	background-color: transparent;
+}
+
+.message-li p {
+	font-size: 0.9rem;
 }
 
 .list-container li.expanded {
@@ -542,9 +562,9 @@ main h2 {
 .modal form *:not(label) {
 	outline: none;
 	border: none;
-	background-color: var(--color-white);
+	background-color: transparent;
 	border-bottom: 1px solid var(--color-accent-transparent);
-	color: var(--color-dark);
+	color: var(--color-text);
 }
 
 .modal form *:not(label, button):focus {
