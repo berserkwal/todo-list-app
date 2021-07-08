@@ -16,6 +16,7 @@
 	--ff: Heebo, sans-serif;
 	--check-empty: url(./check-empty.svg);
 	--check-filled: url(./check-filled.svg);
+	--test: #7270e0;
 }
 
 :root.darkmode {
