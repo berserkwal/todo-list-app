@@ -15,15 +15,6 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 
 (function () {
-	let unitHeight = window.innerHeight / 100;
-	document.documentElement.style.setProperty("--vh", unitHeight);
-	window.addEventListener("resize", () => {
-		unitHeight = window.innerHeight / 100;
-		document.documentElement.style.setProperty("--vh", unitHeight);
-	});
-})();
-
-(function () {
 	function generateAddButton() {
 		const addButton = document.createElement("div");
 
@@ -121,6 +112,7 @@ import parseISO from "date-fns/parseISO";
 				modal.remove();
 				clearProjectList();
 				generateProjectList(document.querySelector(".project-list"));
+				injectSVG();
 				event.preventDefault();
 			}
 		});
@@ -179,20 +171,24 @@ import parseISO from "date-fns/parseISO";
 			)
 				indices.push(i);
 		}
-		console.log(indices);
 		indices.forEach((index) => {
-			notesModule.editSingleNoteProperty(index, "category", null);
+			notesModule.editSingleNoteProperty(index, "category", "Home");
 		});
 		notesModule.removeProject(event.target.parentElement.dataset.index);
-		event.stopPropagation();
 		clearProjectList();
+		clearList();
 		if (event.target.parentElement.innerText === pageHead.innerText) {
-			clearList();
 			pageHead.innerText = "Home";
-			populateList(document.querySelector(".list-container"), null);
+			populateList(document.querySelector(".list-container"), "Home");
+		} else {
+			populateList(
+				document.querySelector(".list-container"),
+				pageHead.innerText
+			);
 		}
 		generateProjectList(document.querySelector(".project-list"));
 		injectSVG();
+		event.stopPropagation();
 	}
 
 	function todayLinkEvent() {
@@ -203,7 +199,7 @@ import parseISO from "date-fns/parseISO";
 
 	function homeLinkEvent() {
 		clearList();
-		populateList(document.querySelector(".list-container"), null);
+		populateList(document.querySelector(".list-container"), "Home");
 		document.querySelector(".page-head").textContent = "Home";
 	}
 
@@ -285,8 +281,10 @@ import parseISO from "date-fns/parseISO";
 	function darkModeEvent(event) {
 		if (event.target.checked) {
 			document.documentElement.classList.add("darkmode");
+			localStorage.setItem("theme", "dark");
 		} else {
 			document.documentElement.classList.remove("darkmode");
+			localStorage.setItem("theme", "light");
 		}
 	}
 
@@ -348,9 +346,11 @@ import parseISO from "date-fns/parseISO";
 		for (let i = 0; i < notesModule.getProjectList().length; i++) {
 			const node = document.createElement("option");
 			node.value = notesModule.getProjectList()[i];
-			node.textContent = notesModule.getProjectList()[i]
-				? notesModule.getProjectList()[i]
-				: "Default";
+			console.log(notesModule.getProjectList()[i]);
+			node.textContent =
+				notesModule.getProjectList()[i] === "Home"
+					? "Default"
+					: notesModule.getProjectList()[i];
 			const pageHead = document.querySelector(".page-head").textContent;
 			console.log(pageHead);
 			if (!(pageHead === "Home" && pageHead === "Today")) {
@@ -454,9 +454,10 @@ import parseISO from "date-fns/parseISO";
 		for (let i = 0; i < notesModule.getProjectList().length; i++) {
 			const node = document.createElement("option");
 			node.value = notesModule.getProjectList()[i];
-			node.textContent = notesModule.getProjectList()[i]
-				? notesModule.getProjectList()[i]
-				: "Default";
+			node.textContent =
+				notesModule.getProjectList()[i] === "Home"
+					? "Default"
+					: notesModule.getProjectList()[i];
 			if (notesModule.getNotesList()[index].category) {
 				if (notesModule.getNotesList()[index].category === node.value) {
 					node.setAttribute("selected", "selected");
@@ -592,23 +593,16 @@ import parseISO from "date-fns/parseISO";
 	function populateList(listContainer, page = "Today") {
 		let currentList;
 
-		if (page) {
-			if (page === "Today") {
-				currentList = notesModule.getNotesList().filter((item) => {
-					return (
-						format(parseISO(item.dueDate), "dd/MM/yyyy") ===
-						format(new Date(), "dd/MM/yyyy")
-					);
-				});
-				console.log(currentList);
-			} else {
-				currentList = notesModule.getNotesList().filter((item) => {
-					return item.category === page;
-				});
-			}
+		if (page === "Today") {
+			currentList = notesModule.getNotesList().filter((item) => {
+				return (
+					format(parseISO(item.dueDate), "dd/MM/yyyy") ===
+					format(new Date(), "dd/MM/yyyy")
+				);
+			});
 		} else {
 			currentList = notesModule.getNotesList().filter((item) => {
-				return item.category === null;
+				return item.category === page;
 			});
 		}
 
@@ -695,4 +689,20 @@ import parseISO from "date-fns/parseISO";
 
 	document.body.append(generateHeader(), generateContent());
 	injectSVG();
+
+	(function () {
+		if (localStorage.getItem("theme")) {
+			if (localStorage.getItem("theme") === "dark") {
+				document.querySelector(".darkmode-check").checked = true;
+				document.documentElement.classList.add("darkmode");
+			}
+		} else localStorage.setItem("theme", "light");
+
+		let unitHeight = window.innerHeight / 100;
+		document.documentElement.style.setProperty("--vh", unitHeight);
+		window.addEventListener("resize", () => {
+			unitHeight = window.innerHeight / 100;
+			document.documentElement.style.setProperty("--vh", unitHeight);
+		});
+	})();
 })();

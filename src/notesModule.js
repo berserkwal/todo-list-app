@@ -1,14 +1,14 @@
 const notesModule = (function () {
 	let notesList = [];
-	let projectList = [null, "Dash", "Cash", "Crash"];
+	let projectList = ["Home"];
 
-	// if (localStorage.getItem("projectList")) {
-	// 	const projectList = localStorage.getItem("projectList");
-	// } else projectList = [];
+	if (localStorage.getItem("projectList")) {
+		projectList = JSON.parse(localStorage.getItem("projectList"));
+	}
 
-	// if (localStorage.getItem("notes")) {
-	// 	notesList = localStorage.getItem("projectList");
-	// } else notesList = [];
+	if (localStorage.getItem("notesList")) {
+		notesList = JSON.parse(localStorage.getItem("notesList"));
+	}
 
 	const createNotes = function (
 		title,
@@ -36,49 +36,29 @@ const notesModule = (function () {
 	function setNotes(...args) {
 		const note = createNotes(...args);
 		notesList.unshift(note);
+		localStorage.setItem("notesList", JSON.stringify(notesList));
 	}
 
 	function removeNote(index) {
 		notesList.splice(index, 1);
+		localStorage.setItem("notesList", JSON.stringify(notesList));
 	}
 
 	function editSingleNoteProperty(index, property, value) {
 		notesList[index][property] = value;
+		localStorage.setItem("notesList", JSON.stringify(notesList));
 	}
-
-	setNotes(
-		"passss",
-		"asdasdaqdadasdadzxcaxcsdasdasqdasdsaqdadasdasdasdadasdadasdasdasdasdasdadadadasdadaadsasdasasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"2021-09-14",
-		3,
-		false,
-		null
-	);
-	setNotes(
-		"basssss",
-		"asdasdaqdadasdadzxcaxcsdasdasqdasdsaqdadasdasdasdadasdadasdasdasdasdasdadadadasdadaadsasdasasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"2021-09-14",
-		2,
-		true,
-		"Dash"
-	);
-	setNotes(
-		"dashhhh",
-		"asdasdaqdadasdadzxcaxcsdasdasqdasdsaqdadasdasdasdadasdadasdasdasdasdasdadadadasdadaadsasdasasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		"2021-07-08",
-		1,
-		true,
-		null
-	);
 
 	function getProjectList() {
 		return [...projectList];
 	}
 	function setProject(proj) {
 		projectList.push(proj);
+		localStorage.setItem("projectList", JSON.stringify(projectList));
 	}
 	function removeProject(index) {
 		projectList.splice(index, 1);
+		localStorage.setItem("projectList", JSON.stringify(projectList));
 	}
 
 	return {
