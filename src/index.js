@@ -632,7 +632,9 @@ import parseISO from "date-fns/parseISO";
 			const p = document.createElement("p");
 			li.innerText = "Nothing to see here, yet.";
 			p.innerText =
-				"Press the button on the bottom-right corner to add a task.";
+				page === "Today"
+					? "No tasks scheduled for today, check Home tab or any Project."
+					: "Press the button on the bottom-right corner to add a task.";
 			li.append(p);
 			li.classList.add("message-li");
 			listContainer.append(li);
