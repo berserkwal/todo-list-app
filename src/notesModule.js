@@ -18,7 +18,6 @@ const notesModule = (function () {
 		isDone,
 		category
 	) {
-		console.log(notesList.length);
 		const noteObj = {
 			title,
 			description,
@@ -42,11 +41,8 @@ const notesModule = (function () {
 	}
 
 	function removeNote(index) {
-		console.log(index);
-		console.log(notesList.length);
 		if (index < notesList.length - 1) {
 			for (let i = index - 1; i >= 0; i--) {
-				console.log("in here", i);
 				notesList[i]["index"] = notesList[i]["index"] - 1;
 			}
 		}

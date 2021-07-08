@@ -548,7 +548,6 @@ import parseISO from "date-fns/parseISO";
 	function listEvent(event) {
 		const listTarget = event.target;
 		const listIndex = listTarget.parentElement.dataset.index;
-		console.log(listIndex);
 		switch (listTarget.classList[0]) {
 			case "flag-icon":
 				event.stopPropagation();
@@ -629,7 +628,6 @@ import parseISO from "date-fns/parseISO";
 			});
 		}
 		if (!currentList.length) {
-			console.log("empty");
 			const li = document.createElement("li");
 			const p = document.createElement("p");
 			li.innerText = "Nothing to see here, yet.";
@@ -710,7 +708,6 @@ import parseISO from "date-fns/parseISO";
 					listDeleteContainer,
 					listDescription
 				);
-				console.log(list);
 				listContainer.append(list);
 				injectSVG();
 			}
@@ -731,7 +728,16 @@ import parseISO from "date-fns/parseISO";
 				document.querySelector(".darkmode-check").checked = true;
 				document.documentElement.classList.add("darkmode");
 			}
-		} else localStorage.setItem("theme", "light");
+		}
+
+		if (
+			window.matchMedia("(prefers-color-scheme: dark)").matches &&
+			!localStorage.getItem("theme", "light")
+		) {
+			document.documentElement.classList.add("darkmode");
+			localStorage.setItem("theme", "dark");
+			document.querySelector(".darkmode-check").checked = true;
+		}
 
 		let vw = window.innerWidth;
 
