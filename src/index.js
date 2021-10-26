@@ -237,7 +237,7 @@ import parseISO from "date-fns/parseISO";
 		projectIcon.src = projectSrc;
 
 		const todaysDate = document.createElement("h6");
-		todaysDate.innerHTML = new Date().toLocaleDateString().slice(0, 2);
+		todaysDate.innerHTML = new Date().getUTCDate();
 		projectList.classList.add("project-list");
 		homeIcon.classList.add("svg-icon");
 		todayIcon.classList.add("svg-icon");
