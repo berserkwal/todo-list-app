@@ -271,7 +271,7 @@ import parseISO from "date-fns/parseISO";
 		const darkmodeCheck = document.createElement("input");
 		const darkmodeSwitch = document.createElement("div");
 
-		websiteLink.textContent = "berserkwal";
+		websiteLink.textContent = "Vikas Kharkwal";
 		footerContainer.textContent = "Designed and developed by";
 
 		websiteLink.classList.add("website-button");
@@ -281,7 +281,7 @@ import parseISO from "date-fns/parseISO";
 		darkmodeCheck.classList.add("darkmode-check");
 		darkmodeSwitch.classList.add("darkmode-switch");
 
-		websiteLink.setAttribute("href", "https://berserkwal.github.io");
+		websiteLink.setAttribute("href", "/");
 		websiteLink.setAttribute("target", "_blank");
 		darkmodeCheck.setAttribute("type", "checkbox");
 
